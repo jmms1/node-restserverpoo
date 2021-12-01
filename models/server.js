@@ -1,4 +1,4 @@
-const express = require('express');
+var express = require('express');
 const cors = require('cors');
 const { dbConnection } = require('../database/config');
 const fileUpload = require('express-fileupload')
@@ -20,7 +20,8 @@ class Server {
             categorias: '/api/categorias',
             productos: '/api/productos',
             usuarios: '/api/usuarios',
-            uploads: '/api/uploads'
+            uploads: '/api/uploads',
+            satws: '/api/satws'
         }
         //Conectar a DB
         this.conectarDB();
@@ -59,6 +60,7 @@ class Server {
         this.app.use( this.paths.productos, require('../routes/productos'));
         this.app.use( this.paths.categorias, require('../routes/categorias'));
         this.app.use( this.paths.uploads, require('../routes/uploads'));
+        this.app.use( this.paths.satws, require('../routes/satws'));
 
     }
 
