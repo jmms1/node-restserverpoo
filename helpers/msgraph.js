@@ -106,7 +106,22 @@ const apiCallGroup = async (accessToken, {invitedUser}) =>  {
 
 		const response = await axios.default.post(endpointGroup, dataGroup, optionsGroup);
 
-        return response;
+        if( response ){
+            
+            return {
+
+                "status": "ok"
+            }
+
+        }else{
+
+            return{
+             response,
+             
+             "status":"no response"
+            }    
+        }
+
 
 
 
