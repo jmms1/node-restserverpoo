@@ -21,7 +21,8 @@ class Server {
             productos: '/api/productos',
             usuarios: '/api/usuarios',
             uploads: '/api/uploads',
-            satws: '/api/satws'
+            satws: '/api/satws',
+            graph: '/api/graph'
         }
         //Conectar a DB
         this.conectarDB();
@@ -61,6 +62,7 @@ class Server {
         this.app.use( this.paths.categorias, require('../routes/categorias'));
         this.app.use( this.paths.uploads, require('../routes/uploads'));
         this.app.use( this.paths.satws, require('../routes/satws'));
+        this.app.use( this.paths.graph, require('../routes/graph'));
 
     }
 

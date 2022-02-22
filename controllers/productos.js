@@ -1,5 +1,6 @@
 const { request, response } = require("express");
 const { categoriaExiste, productoExiste } = require("../helpers/db-validators");
+const { pruebaArchivo } = require("../helpers/formatoDrip");
 const { Producto, Categoria } = require("../models");
 
 
@@ -28,6 +29,9 @@ const obtenerProductos = async ( req= request, res=response ) => {
 const obtenerProducto = async ( req= request, res=response ) => {
 
     const { id } = req.params;
+
+    let valor = pruebaArchivo;
+    console.log(valor);
 
     const producto = await Producto.findById( id ).populate('usuario', 'nombre').populate('categoria', 'nombre');
 

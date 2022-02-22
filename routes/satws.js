@@ -1,6 +1,6 @@
 var { Router } = require('express');
 var { check } = require('express-validator');
-const { getTopClients } = require('../controllers/satws');
+const { getTopClients, getTopClientsRFC } = require('../controllers/satws');
 const { validarCampos, validarRfc } = require('../middlewares');
 
 
@@ -12,7 +12,10 @@ router.get('/:id', [
 ], getTopClients);
 
 
-
+// router.get('/:id', [
+//     check('id').custom(validarRfc),
+//     validarCampos
+// ], getTopClientsRFC);
 
 
 
