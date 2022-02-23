@@ -17,8 +17,13 @@ const getTopClients = async ( req = request, res = response, next ) => {
 
     console.log(ok);
 
+    const response = [{
+        "rfc emisor": id,
+        "top clientes": datacomplete
+    }]
 
-    res.status(201).json( datacomplete );
+
+    res.status(201).json( response );
 
 
     
