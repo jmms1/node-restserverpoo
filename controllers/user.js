@@ -75,11 +75,6 @@ const usuariosDelete = async (req, res = response) => {
     res.json( usuario );
 }
 
-
-
-
-
-
 const usuariosPatch = (req, res = response) => {
     res.json({
         msg: 'PATCH API- controlador'

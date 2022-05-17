@@ -10,19 +10,16 @@ class Server {
     constructor() {
         this.app = express();
         this.port = process.env.PORT;
-        // this.usuariosPath = '/api/usuarios';
-        // this.authPath = '/api/auth';
-        // this.categoriasPath = '/api/categorias';
+
 
         this.paths = {
             auth: '/api/auth',
-            buscar: '/api/buscar',
-            categorias: '/api/categorias',
-            productos: '/api/productos',
             usuarios: '/api/usuarios',
             uploads: '/api/uploads',
             satws: '/api/satws',
-            graph: '/api/graph'
+            graph: '/api/graph',
+            mail: '/api/mail',
+            personas: '/api/personas'
         }
         //Conectar a DB
         this.conectarDB();
@@ -56,13 +53,12 @@ class Server {
     routes( ) {
 
         this.app.use( this.paths.auth, require('../routes/auth'));
-        this.app.use( this.paths.buscar, require('../routes/buscar'));
         this.app.use( this.paths.usuarios, require('../routes/user'));
-        this.app.use( this.paths.productos, require('../routes/productos'));
-        this.app.use( this.paths.categorias, require('../routes/categorias'));
         this.app.use( this.paths.uploads, require('../routes/uploads'));
         this.app.use( this.paths.satws, require('../routes/satws'));
         this.app.use( this.paths.graph, require('../routes/graph'));
+        this.app.use( this.paths.mail, require('../routes/mail'));
+        this.app.use( this.paths.personas, require('../routes/personas'));
 
     }
 

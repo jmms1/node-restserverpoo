@@ -34,14 +34,14 @@ router.post('/', [
     check('correo', 'El correo no es valido').isEmail(),
     check('correo').custom( emailExiste ),
     // check('rol', 'No es un rol permitido').isIn(['ADMIN_ROLE', 'USER_ROLE']),
-    check('rol').custom( esRolValido ),
+    // check('rol').custom( esRolValido ),
     validarCampos
 ] ,usuariosPost );
 
 router.delete('/:id',[
     validarJWT,
     // esAdminRole,
-    tieneRole('ADMIN_ROLE', 'VENTAS_ROLE'),
+    tieneRole('ADMIN_ROLE'),
     check('id', 'No es un ID valido').isMongoId(),
     check('id').custom( idExiste ),
     validarCampos

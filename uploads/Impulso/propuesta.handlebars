@@ -1,0 +1,103 @@
+{{>style}}
+
+<body width="100%" style="margin: 0; padding: 0 !important; background: #f3f3f5; mso-line-height-rule: exactly;">
+    <center style="width: 100%; background: #f3f3f5;">
+    <!--[if mso | IE]>
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f3f3f5;">
+    <tr>
+    <td>
+    <![endif]-->
+        
+    <div class="email-container" style="max-width: 680px; margin: 0 auto;">
+        <!--[if mso]>
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="680" align="center">
+        <tr>
+        <td>
+        <![endif]-->
+                        
+        <img src="https://res.cloudinary.com/dry1qbv7t/image/upload/v1646419639/Public%20Impulso/capture_20220304124638052_qdhy8z.bmp" width="640"  height="" alt="alt_text" border="0" style="width: 100%; margin-top: 20px; max-width: 640px; height: auto; display: block;" class="g-img">
+                        
+    <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="max-width: 680px; width:100%">
+        
+            <h1><span style="color: #3B3838;"><span style="color: #6F0605;">¡Felicidades {{ propuesta.name }}! </span><span style="color: #3B3838;">Tu solicitud de crédito se encuentra aprobada para un crédito revolvente con ImpulsoMx.</span></span></h1>
+            <p>&nbsp;</p>
+
+         <div>
+             <h2 style="text-align: center;"><span style="color: #3B3838;">Monto Autorizado Total: ${{formatCurrency propuesta.amountauth}}</span></h2>
+                <p style="text-align: center;"><span style="color: #3B3838;">Monto Autorizado Inicial:  <span style="font-weight: bold; color:#6F0605">${{formatCurrency propuesta.tablemail.[0].amount2}}</span></p>
+                <p style="text-align: center;"><span style="color: #3B3838;">Tasa de Interés Autorizada:  <span style="font-weight: bold; color:#6F0605">{{propuesta.interestrate}}%</span></p>
+                <p style="text-align: center;"><span style="color: #3B3838;">Comisión por Disposición:   <span style="font-weight: bold; color:#6F0605">{{propuesta.cxd}}%</span></p>
+                </div>
+                
+                <p style="text-align: justify; font-weight: bold;">&nbsp;</p>
+
+                <p style="text-align: justify;"><span style="color: #3B3838;">Forma de Liberación:</span></p>
+        
+                <table class="tftable" border="1">
+                    <tr><th>Porcentaje</th><th>Monto</th></tr>
+                    {{#propuesta.tablemail}}
+                    <tr><td>{{porcent}}%</td><td>${{amount2}}</td></tr>
+                    {{/propuesta.tablemail}}
+
+
+
+        </table>
+
+        <div>
+            <img src="https://res.cloudinary.com/dry1qbv7t/image/upload/v1646417812/Public%20Impulso/impulsorevolvente_f7yuyq.png" width="640"  height="" alt="alt_text" border="0" style="width: 100%; margin-top: 20px; max-width: 640px; height: auto; display: block;" class="g-img">
+
+        </div>
+
+
+        <div style="text-align: left; margin-top: 15px;">
+
+            <h2 style="color: #6F0605;">Características: </h2>
+            <ul>
+                <li>Línea de credito revolvente con pago de capital 90 días después de la disposición del credito.</li>
+                <li>Los intereses deben ser cubiertos cada 30 días </li>
+                <li>Tasa de interés anual fija durante la vigencia de la línea de credito. </li>
+            </ul>
+            
+            <h2 style="color: #6F0605;">Condiciones de Operación y desbloqueo de incrementos: </h2>
+            <ul>
+                <li>La línea de crédito debe encontrarse al corriente y sin haber presentado atrasos en los pagos correspondientes. </li>
+                <li>Es necesario actualizar expediente cada 6 meses, así como tener la clave CIEC activa dentro de la plataforma de Distrito Pyme.  </li>
+                <li>La empresa debe encontrarse en una situación financiera sana y mostrar una tendencia positiva en sus ventas. </li>
+                <li>La solicitud de disposición de crédito deberá realizarse al correo de contacto@impmx.com.  </li>
+            </ul>
+
+        </div>
+                <tr>
+                    <td style="padding: 30px;" class="sm-p">
+                        <table align="left" border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                            <tr>
+                            <td style="padding: 30px 0;" width="100%" class="sm-py">
+                            <table aria-hidden="true" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%">
+                            <tr>
+                            <td height="1" width="100%" style="font-size: 0; line-height: 0; border-top: 1px solid #D6D8DB;">&nbsp;</td>    
+                            </tr>
+                            </table>    
+                            </td>
+                        </table>
+                    </td>
+                            
+                </tr>
+                        
+        </table>
+                </td>
+            </tr>
+            <!-- Footer : END -->
+            <td style="padding-bottom: 5px; padding-top: 20px; text-align: center; ">
+                <img src="https://res.cloudinary.com/dry1qbv7t/image/upload/v1646417812/Public%20Impulso/logoimpmx_shbazg.png" align="center" alt="" border="0" width="30%" height="30%" style="display: flex; font-family: arial, sans-serif; font-size: 12px; line-height: 12px; color: #3C3F44;">
+    </table>
+    </div>
+    <!--[if mso | IE]>
+    </td>
+    </tr>
+    </table>
+    <![endif]-->
+    </center>
+</body>
+
+</html>
+                    
