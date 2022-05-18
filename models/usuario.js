@@ -21,13 +21,17 @@ const UsuarioSchema = Schema({
         type: String,
         required: true,
         default:'USER_ROLE',
-        enum: ['ADMIN_ROLE', 'ANALIST_ROLE', 'USER_ROLE']
+        enum: ['ADMIN_ROLE', 'ANALIST_ROLE', 'USER_ROLE', 'BROKER_ROLE']
     },
     estado: {
         type: Boolean,
         default: true
     },
     google: {
+        type: Boolean,
+        default: false
+    },
+    oauth: {
         type: Boolean,
         default: false
     },

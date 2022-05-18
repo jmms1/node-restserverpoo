@@ -9,7 +9,7 @@ const usuariosGet = async (req=request, res = response) => {
     // const {q, nombre="No name", apikey} = req.query;
     const query= {estado: true};
 
-    const {limite = 5 , desde = 0} = req.query;
+    const {limite = 15 , desde = 0} = req.query;
     // const usuarios = await Usuario.find(query)
     // .skip(Number(desde))
     // .limit(Number(limite));

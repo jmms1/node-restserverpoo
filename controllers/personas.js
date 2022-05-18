@@ -46,7 +46,9 @@ const cargarPersona = async (req = request, res= response) => {
 
 const getCards = async (req = request, res= response) => {
 
-    const query = { 'etapa': "pre-analisis" };
+    const {etapa="pre-analisis"} = req.query;
+ 
+    const query = { 'etapa': etapa };
     const options = 'solicitud.nombre_comercial solicitud.distrito_crm_id solicitud.monto_solicitado _id';
 
     try {
