@@ -291,93 +291,25 @@ const personaConstructorDB = (props) => {
 
 }
 
+const searchOwnerId = async (correo) => {
+
+    try {
+        const apiResponse = await axios.get(`crm/v3/owners/` + hapiKey + `&email=${correo}`);
+
+        return apiResponse;
+        
+    } catch (error) {
+        return error;
+    }
+
+
+}
+
 module.exports={
     getDeal,
     personaConstructorDB,
     createNote,
-    associateNote
+    associateNote,
+    searchOwnerId
 }
 
-    // //Persona
-    // if( props.regimen ){ newpersona.tipo_persona = props.regimen }
-    // if( props.regimen ==='P.Moral'){ 
-
-    //     if( props.n3_16_razon_social){ newpersona.razon_social = props.n3_16_razon_social }
-    //     if( props.n3_15_rfc_pm){ newpersona.RFC_PM = props.n3_15_rfc_pm }
-
-    // }
-	// if( props.n4_1_nombre ){ newpersona.nombre = props.n4_1_nombre }
-	// if( props.n4_2_apellido_paterno ){ newpersona.apellido_P = props.n4_2_apellido_paterno }
-	// if( props.n4_3_apellido_materno ){ newpersona.apellido_M = props.n4_3_apellido_materno }
-	// if( props.n3_rfc ){ newpersona.RFC_PF = props.n3_rfc }
-	// if( props.curp ){ newpersona.CURP = props.curp }
-
-    // //Contacto 
-    // if(props.email ){ newpersona.email = props.email}	
-    // if(props.celular ){ newpersona.celular = props.celular}	
-    // if(props.telefono ){ newpersona.telefono_1 = props.telefono}	
-    // if(props.n4_92_tel_fono ){ newpersona.telefono_2 = props.n4_92_tel_fono}
-    
-    // //Solicitud
-    // if( props.n3_nombre_comercial ){ solicitud.nombre_comercial = props.n3_nombre_comercial}
-	// if( props.numeroderegistro ){ solicitud.distrito_crm_id = props.numeroderegistro}
-	// if( props.hs_object_id ){ solicitud.distrito_ojectid = props.hs_object_id}
-	// if( props.n2_00_monto_solicitado ){ solicitud.monto_solicitado = props.n2_00_monto_solicitado}
-	// if( props.n2_2_tiempo_para_pago ){ solicitud.plazo_solicitado = props.n2_2_tiempo_para_pago}
-	// if( props.n2_5_ventas_anuales ){ solicitud.ventas_solicitud = props.n2_5_ventas_anuales}
-	// if( props.n2_6_antig_edad_del_negocio ){ solicitud.antiguedad_solicitud = props.n2_6_antig_edad_del_negocio}
-	// if( props.necesidad_de_financiamiento ){ solicitud.necesidad_solicitud = props.necesidad_de_financiamiento}
-	// if( props.giro ){ solicitud.giro = props.giro}
-	// if( props.n3_11_sitio_web ){ solicitud.sitio_web = props.n3_11_sitio_web}
-	// if( props.n3_12_facebook ){ solicitud.sitio_facebook = props.n3_12_facebook}
-	// if( props.n3_actividad_espec_fica ){ solicitud.actividad_especifica = props.n3_actividad_espec_fica}
-	// if( props.n3_18_numero_de_empleados ){ solicitud.empleados = props.n3_18_numero_de_empleados}
-	// if( props.n9_1_03_destino_especifico_del_credito ){ solicitud.destino = props.n9_1_03_destino_especifico_del_credito}
-	// if( props.n2_4_urgencia_de_financiamiento ){ solicitud.urgencia_de_financiamiento = props.n2_4_urgencia_de_financiamiento}
-	// if( props.n3_13_tpv ){ if( props.n3_13_tpv === 'No' ){ solicitud.tpv = false} else solicitud.tpv = true }
-	// if( props.n3_17_exportacion ){ if(props.n3_17_exportacion === 'No' ){solicitud.exportacion = false} else solicitud.exportacion = true }
-	// if( props.n3_20_clientes_pagan_a_mas_de_30_dias ){ if(props.n3_20_clientes_pagan_a_mas_de_30_dias === 'No' ){
-    //      solicitud.clientes_pagan_a_credito = false} else {solicitud.clientes_pagan_a_credito = true}}
-	// if( props.n3_14_garant_a ){ solicitud.garantia = props.n3_14_garant_a}
-	// if( props.n9_1_02_numero_de_empleados ){ solicitud.numero_de_empleados = props.n9_1_02_numero_de_empleados}
-	// if( props.n4_94_edad ){ solicitud.edad = props.n4_94_edad}
-	// if( props.n4_4_estado_civil ){ solicitud.estado_civil = props.n4_4_estado_civil}
-	// if( props.n4_5_fecha_de_nacimiento ){ solicitud.fecha_nacimiento = props.n4_5_fecha_de_nacimiento}
-	// if( props.createdate ){ solicitud.fecha_registro = props.createdate}
-	// if( props.hubspot_owner_id ){ solicitud.propietarios_hs = props.hubspot_owner_id}
-	// if( props.ip_del_solicitante ){ solicitud.ip_del_solicitante = props.ip_del_solicitante}
-    
-    // //buro
-    // if(props.n6_1_cr_dito_hipotecario ){if(props.n6_1_cr_dito_hipotecario === 'No' ){
-    //      buro.hipotecario = false } else {buro.hipotecario = true }	}	
-    // if(props.n6_2_cr_dito_automotriz ){ if(props.n6_2_cr_dito_automotriz === 'No' ){
-    //     buro.automotriz = false } else {buro.automotriz = true}}	
-    // if(props.n6_3_tarjeta_de_cr_dito ){if(props.n6_3_tarjeta_de_cr_dito === 'No' ){
-    //     buro.tarjeta = false } else {buro.tarjeta = true}}	
-    // if(props.n6_4_tdc_4_d_gitos ){ buro.digitos_tdc = props.n6_4_tdc_4_d_gitos }	
-    // if(props.score_bc ){ buro.score = props.score_bc }	
-    // if(props.n10_1_id_unykoo ){ buro.unykoo_id = props.n10_1_id_unykoo }	
-
-    // //Facturacion 
-    // if(props.n4_93_ciec ){ facturacion.status_ciec = true }else{facturacion.status_ciec = false}	
-    // if(props.credenciales_creadas_satws ){ facturacion.status_satws = props.credenciales_creadas_satws }	
-    // if(props.datacode ){ facturacion.data_code = props.datacode  }	
-
-    // //Domicilio Negocio
-
-	// if( props.n3_calle ){ newdomicilio.calle = props.n3_calle }
-	// if( props.n3_num_ext ){ newdomicilio.numero_E = props.n3_num_ext }
-	// if( props.n3_num_int ){ newdomicilio.numero_I = props.n3_num_int }
-	// if( props.codigo_postal ){ newdomicilio.codigo_Postal = props.codigo_postal }
-	// if( props.n3_9_colonia ){ newdomicilio.colonia = props.n3_9_colonia }
-	// if( props.municipio_negocio ){ newdomicilio.municipio = props.municipio_negocio }
-	// if( props.estado_de_la_rep_del_negocio ){ newdomicilio.estado = props.estado_de_la_rep_del_negocio }
-
-    // //Domicilio Particular 
-    // if(props.n4_6_calle ){ newdomiciliop.calle = props.n4_6_calle}	
-    // if(props.n4_7_num_ext ){ newdomiciliop.numero_E = props.n4_7_num_ext}	
-    // if(props.n4_8_num_int ){ newdomiciliop.numero_I = props.n4_8_num_int}	
-    // if(props.n4_9_c_p_ ){ newdomiciliop.codigo_Postal = props.n4_9_c_p_}	
-    // if(props.n4_91_colonia ){ newdomiciliop.colonia = props.n4_91_colonia}	
-    // if(props.municipio_de_la_persona ){ newdomiciliop.municipio = props.municipio_de_la_persona}	
-    // if(props.estado_de_la_rep_de_la_persona ){ newdomiciliop.estado = props.estado_de_la_rep_de_la_persona}	

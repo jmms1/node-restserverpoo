@@ -1,7 +1,8 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { cargarArchivo, actualizarImg, mostrarImagen, actImgCloud } = require('../controllers/uploads');
+const { cargarArchivo, actualizarImg, mostrarImagen, actImgCloud, serchprueba } = require('../controllers/uploads');
 const { coleccionesPermitidas } = require('../helpers');
+const { searchOwnerId } = require('../helpers/hubspot-helper');
 const { validarArchivo } = require('../middlewares');
 const { validarCampos } = require('../middlewares/validar-campos');
 
@@ -25,6 +26,7 @@ router.get('/:coleccion/:id',[
     validarCampos
 ],mostrarImagen);
 
+router.post('/prueba/',[], serchprueba)
 
 
 

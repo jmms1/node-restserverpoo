@@ -37,6 +37,10 @@ const UsuarioSchema = Schema({
     },
     hubspotId: {
         type: Number
+    },
+    nuevo: {
+        type: Boolean,
+        default: true
     }
 });
 

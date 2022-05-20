@@ -9,35 +9,37 @@ const { googleVerify } = require("../helpers/google-verify");
 
 const login = async  (req, res= response) => {
 
-    const {email, password } = req.body;
+    const {correo, password } = req.body;
+
 
 
     try {
         //Verificar correo existe
-        const usuario = await Usuario.findOne( {email} );
+        const usuario = await Usuario.findOne( {correo} );
         if( !usuario ){
             return res.status(400).json({
-                msg:'Usuario / Passsword no son correctos -correo'
+                msg:'Usuario / Passsword no son correctos o no existen'
             });
         }
         //Verificar usuario activo
         if( !usuario.estado ){
             return res.status(400).json({
-                msg:'Usuario / Passsword no son correctos -estado false'
+                msg:'Usuario / Passsword no son correctos'
             });
         }
         //Validar Contraseña
         const validPassword = bcryptjs.compareSync( password , usuario.password );
+
         if( !validPassword ){
             return res.status(400).json({
                 msg:'Usuario / Passsword no son correctos -password'
             });
         }
         //Generar JWT 
-        const token = await generarJWT( usuario. id );
+        const token = await generarJWT( usuario._id );
 
         res.json({
-            msg: 'Login ok',
+            msg: 'Login Successful',
             usuario,
             token
         })

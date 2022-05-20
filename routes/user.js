@@ -8,7 +8,7 @@ const { check } = require('express-validator');
 const {validarCampos,validarJWT,esAdminRole,tieneRole } = require('../middlewares')
 
 
-const { usuariosGet, usuariosPut, usuariosPost, usuariosDelete, usuariosPatch } = require('../controllers/user');
+const { usuariosGet, usuariosPut, usuariosPost, usuariosDelete, usuariosPatch, usuarioPasswordChange } = require('../controllers/user');
 const { esRolValido, emailExiste, idExiste } = require('../helpers/db-validators');
 
 
@@ -30,13 +30,20 @@ router.put('/:id', [
 
 router.post('/', [
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
-    check('password', 'El password es obligatorio y mas de 6 caracteres').isLength( {min: 6} ),
     check('correo', 'El correo no es valido').isEmail(),
     check('correo').custom( emailExiste ),
     // check('rol', 'No es un rol permitido').isIn(['ADMIN_ROLE', 'USER_ROLE']),
     // check('rol').custom( esRolValido ),
     validarCampos
 ] ,usuariosPost );
+
+
+router.post('/password', [
+    check('id', 'El id es obligatorio').not().isEmpty(),
+    check('password', 'El password es obligatorio y mas de 8 caracteres').isLength( {min: 8} ),
+    check('id').custom( idExiste ),
+    validarCampos
+] ,usuarioPasswordChange );
 
 router.delete('/:id',[
     validarJWT,

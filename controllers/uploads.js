@@ -6,7 +6,8 @@ const { response, request } = require("express");
 const { subirArchivo } = require("../helpers");
 
 
-const { Usuario, Producto } = require('../models')
+const { Usuario, Producto } = require('../models');
+const { searchOwnerId } = require('../helpers/hubspot-helper');
 
 
 
@@ -148,6 +149,22 @@ const actImgCloud = async (req, res= response) => {
 
 } 
 
+const serchprueba = async ( req = request, res = response) => {
+
+    const {correo} = req.body;
+
+    const respuestaHB = await searchOwnerId(correo);
+
+    let { data } = respuestaHB;
+
+    console.log(data);
+
+    res.status(200).json(data);
+
+
+
+}
+
 
 
 
@@ -155,5 +172,6 @@ module.exports = {
     cargarArchivo,
     actualizarImg,
     mostrarImagen,
-    actImgCloud
+    actImgCloud,
+    serchprueba
 }
