@@ -60,7 +60,20 @@ const usuarioPasswordChange = async (req = request, res = response) => {
     const salt = bcryptjs.genSaltSync();
     const encriptPassword = bcryptjs.hashSync(password, salt);
     
-    const { data } = await searchOwnerId(correo);
+    const hubspotResponse = await searchOwnerId(correo);
+
+
+    if( !hubspotResponse.data ){
+
+        await Usuario.findByIdAndUpdate( id, {'password':encriptPassword, 'nuevo':false }, {new: true});
+
+        return res.status(200).json({'msg':'No existe Id Hubspot'})
+
+
+    }
+
+    const { data } = hubspotResponse
+
     const { results } = data;
 
 
@@ -73,8 +86,6 @@ const usuarioPasswordChange = async (req = request, res = response) => {
 
         const respuestaHB = results[0]
 
-        console.log(respuestaHB);
-        console.log(respuestaHB.id);
 
         hubspotId = respuestaHB.id; 
 
@@ -85,7 +96,7 @@ const usuarioPasswordChange = async (req = request, res = response) => {
     }
     
 
-    console.log(hubspotId);
+
 
     const nuevoUsuario = await Usuario.findByIdAndUpdate( id, {'password':encriptPassword, 'nuevo':false, hubspotId}, {new: true});
 
