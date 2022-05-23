@@ -14,10 +14,11 @@ router.get('/cards/', getCards );
 router.get('/principal/:id', getPersona );
 
 router.post('/notes/',[
-    check('note', 'note required').not().isEmpty(),
+    check('noteForm', 'note required').not().isEmpty(),
     check('ownerNoteId', 'hubspot owner requiredr').not().isEmpty(),
     check('hubspotDealId', 'id deal required').not().isEmpty(),
-    check('idDb', 'database id required').isMongoId(),
+    check('idDeal', 'database id deal required').isMongoId(),
+    check('idUsuario', 'database id user required').isMongoId(),
     validarCampos,
 ], postNote );
 

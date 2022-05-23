@@ -100,23 +100,32 @@ const changePersonaStage = async (req= request, res= response) => {
 
 const postNote = async ( req=request, res=response) => {
 
-    const {note, ownerNoteId, hubspotDealId, idDb} = req.body;
+    const {noteForm, ownerNoteId, hubspotDealId, idDeal, idUsuario} = req.body;
 
     const nota = {
-        nota:note,
-        usuario:ownerNoteId
+        nota:noteForm,
+        date: new Date
     };
     
-    const response = await createNote(note, ownerNoteId).catch( res.status(400));
+    const response = await createNote(noteForm, ownerNoteId);
+
+    if( response.error ){
+        return  res.status(400).json({'err':'Error al crear la nota'});
+    }
+       
 
     console.log(response.id);
 
-    const {data:asosiationResponse} = await associateNote(response.id, hubspotDealId ).catch( res.status(400));
+    const {data:asosiationResponse} = await associateNote(response.id, hubspotDealId );
 
-    const personamodify = await Persona.findByIdAndUpdate(idDb, { $push: { notas: nota  } }, {new: true});
+    if(asosiationResponse.error){
+        return res.status(400).json({'err':'Error al asociar la nota'});
+    }
+
+    const personamodify = await Persona.findByIdAndUpdate(idDeal, { $push: { notas: nota  } }, {new: true});
 
 
-    res.status(200).json({response, asosiationResponse, personamodify});
+    res.status(200).json({'msg':'Nota creada correctamente'});
 }
 
 module.exports={

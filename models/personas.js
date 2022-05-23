@@ -99,11 +99,11 @@ const PersonaSchema = Schema({
         }
 
     },
-    notes:{
-        note:String,
-        date:Date,
-        uid:Number 
-    },    
+    notes:[{
+        note: String,
+        date: Date,
+        usuario: String
+    }],    
     consultasBC: {
         type: Schema.Types.ObjectId,
         ref:'Buro',

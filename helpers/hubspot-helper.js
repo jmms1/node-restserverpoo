@@ -5,7 +5,8 @@ const _axios = require("axios").default;
 const axios = _axios.create({
     baseURL: 'https://api.hubapi.com/',
     headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "accept": "application/json"
     }
 });
 const hapiKey = `?hapikey=${process.env.HUBSPOT_APIKEY}`;
@@ -41,55 +42,40 @@ const createNote = async (note, propietarios_hs) => {
         hs_note_body: note,
         hubspot_owner_id: propietarios_hs,
     }}
-    const url =  `https://api.hubapi.com/crm/v3/objects/notes/${hapiKey}`;
-    const axiosPost = _axios.create({
-        method:'POST',
-        headers: {
-            "Content-Type": "application/json",
-            "accept": "application/json"
-        },
-    });
+
     try {
-        const response = await axiosPost.post(url,data);
+        const response = await axios.post(`/crm/v3/objects/notes/${hapiKey}`,data);
 
         console.log(response.data)
         return response.data;
         
-    } catch (e) {
+    } catch (error) {
 
-        console.log(e.response.data)
+        console.log(error.response.data);
+        return {'error': error.response.data};
     }
     
 }
 
 const associateNote = async(noteId, objectId) => {
 
-    const url =  `https://api.hubapi.com/crm/v4/objects/notes/${noteId}/associations/deals/${objectId}${hapiKey}`;
-    const axiosPost = _axios.create({
-        headers: {
-            "Content-Type": "application/json",
-            "accept": "application/json"
-        },
-    });
+    const url =  `/crm/v4/objects/notes/${noteId}/associations/deals/${objectId}${hapiKey}`;
+
     const data = [ 
         {
          "associationCategory": "HUBSPOT_DEFINED",
          "associationTypeId": 12
         }
       ]
-    try {
-        const response = await axiosPost.put(url, data);
+        try {
+            const response = await axios.put(url, data);
 
-        console.log(response)
-        return response;
-        
-    } catch (e) {
-        console.log(e);
-        return e
-    }
+            return response;
+            
+        } catch (error) {
 
-
-
+            return error
+        }
 }
 
 const personaConstructorDB = (props) => {
