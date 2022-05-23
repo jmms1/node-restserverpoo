@@ -46,9 +46,9 @@ router.post('/password', [
 ] ,usuarioPasswordChange );
 
 router.delete('/:id',[
-    validarJWT,
+    // validarJWT,
     // esAdminRole,
-    tieneRole('ADMIN_ROLE'),
+    // tieneRole('ADMIN_ROLE'),
     check('id', 'No es un ID valido').isMongoId(),
     check('id').custom( idExiste ),
     validarCampos

@@ -1,7 +1,5 @@
 const { response, request } = require('express');
 const bcryptjs = require('bcryptjs');
-
-
 const Usuario = require('../models/usuario');
 const { searchOwnerId } = require('../helpers/hubspot-helper');
 
@@ -11,7 +9,7 @@ const usuariosGet = async (req=request, res = response) => {
     // const {q, nombre="No name", apikey} = req.query;
     const query= {estado: true};
 
-    const {limite = 15 , desde = 0} = req.query;
+    const {limite = 50 , desde = 0} = req.query;
     // const usuarios = await Usuario.find(query)
     // .skip(Number(desde))
     // .limit(Number(limite));
@@ -86,6 +84,7 @@ const usuarioPasswordChange = async (req = request, res = response) => {
 
     }
     
+
     console.log(hubspotId);
 
     const nuevoUsuario = await Usuario.findByIdAndUpdate( id, {'password':encriptPassword, 'nuevo':false, hubspotId}, {new: true});
@@ -120,11 +119,9 @@ const usuariosDelete = async (req, res = response) => {
    
    const { id } = req.params;
    
-    //Eliminar
-//    const usuario = await Usuario.findByIdAndDelete( id );
-    const usuario = await   Usuario.findByIdAndUpdate( id, {estado: false});
+    const usuario = await Usuario.findByIdAndUpdate( id, {'estado': false}, {new:true});
    
-    res.json( usuario );
+    res.status(200).json( usuario );
 }
 
 const usuariosPatch = (req, res = response) => {
