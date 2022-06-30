@@ -1,7 +1,5 @@
 const axios = require('axios');
 
-
-//Parametros Generales
 const fecha = new Date();
 const añoActual = fecha.getFullYear();
 const nuevoAño = añoActual -1;
@@ -15,20 +13,22 @@ const params =  {
     'options[from]': `${nuevoAño}-${mes}-01`
 }
 
+const urlInit = 'https://api.satws.com/';
 
-//Funciones 
+
+
 
 const getSatTopClients = async (id) => {
 
     const instance = axios.create({
-    baseURL:`https://api.satws.com/insights/${id}/customer-concentration`,
+    baseURL:`${urlInit}insights/${id}/customer-concentration`,
     headers,
     params
     })
         
     try{
         const { data } = await instance.get();
-        console.log(data);
+
         const ventas = data.data.reduce((a, b) => a + (b['total'] || 0), 0)
         const clientes =  data.data.map( data => {
             newdata = {};
@@ -53,7 +53,7 @@ const getSatTopClients = async (id) => {
 const getSatTopProv = async (id) => {
 
     const instance = axios.create({
-        baseURL:`https://api.satws.com/insights/${id}/supplier-concentration`,
+        baseURL:`${urlInit}insights/${id}/supplier-concentration`,
         headers,
         params
         })
@@ -79,10 +79,12 @@ const getSatTopProv = async (id) => {
     }
 
 }
+
+
 const getSatBancos = async (id) => {
 
     const instance = axios.create({
-        baseURL:`https://api.satws.com/insights/${id}/financial-institutions`,
+        baseURL:`${urlInit}insights/${id}/financial-institutions`,
         headers,
         params
         });
@@ -111,43 +113,10 @@ const getSatBancos = async (id) => {
     }
 }
 
-const getResultadosDeclaracion = async (id) => {
-
-    const instance = axios.create({
-        baseURL:`https://api.satws.com/insights/${id}/income-statement`,
-        headers,
-        params
-        });
-        try {
-            const { data } = await instance.get();
-            // const gastosfinancieros = data.data.reduce((a, b) => a + (b['total'] || 0), 0);
-            // const institucionesfinancieras =  data.data.map( data => {
-            //     newdata = {};
-            //     newdata.rfc = data.rfc;
-            //     newdata.legalName = data.legalName;
-            //     newdata.tradeName = data.tradeName;
-            //     newdata.website = data.website; 
-            //     newdata.sector = data.sector; 
-            //     newdata.total = data.total; 
-            //     let newtransactions = data.transactions.slice(-12);
-            //     newdata.transactions = newtransactions;
-            //     return newdata;
-            // })
-            
-            console.log(data);
-            return data;
-            
-        } catch (error) {
-            console.log('Error',error);
-            return error;
-        }
-
-}
-
 const invoiceExtraction = async  (id) => {
     
 
-    const baseURL = `https://api.satws.com/extractions`;
+    const baseURL = `${urlInit}extractions`;
     const body =  {
                 "taxpayer": `/taxpayers/${id}`,
                 "extractor": "invoice",
@@ -160,7 +129,6 @@ const invoiceExtraction = async  (id) => {
     try {
         const response = await axios.post(baseURL,body,{headers});
 
-        console.log(response);
 
         return response.data;
         
@@ -174,10 +142,9 @@ const invoiceExtraction = async  (id) => {
 
 const validateInvoiceExtraction = async (id) => {
 
-    // https://api.satws.com/extractions/?taxpayer.id=DSD0103089Q7&extractor=invoice
 
     const instance = axios.create({
-        baseURL:`https://api.satws.com/extractions/`,
+        baseURL:`${urlInit}extractions/`,
         headers,
         params: {
             'taxpayer.id': id,
@@ -189,15 +156,15 @@ const validateInvoiceExtraction = async (id) => {
             return data['hydra:totalItems'];
             
         } catch (error) {
-;
+
             return error;
         }
 
-}
+};
 
 const validateCredentials = async (id) => {
     const instance = axios.create({
-        baseURL:`https://api.satws.com/credentials/`,
+        baseURL:`${urlInit}credentials/`,
         headers,
         params: {
             'rfc': id,
@@ -218,6 +185,117 @@ const validateCredentials = async (id) => {
         }
     
 }
+
+const metaDataInsight = async ( id ) => {
+
+    const instance = axios.create({
+        baseURL:`${urlInit}insights/${id}/metadata`,
+        headers
+        })
+
+        try {
+            const {data} = await instance.get();
+            return data
+
+            
+        } catch (error) {
+            console.log(error);
+            return error
+        }
+    
+
+};
+
+const balanceInsight = async ( id ) => {
+
+    const instance = axios.create({
+        baseURL:`${urlInit}insights/${id}/balance-sheet`,
+        headers
+        });
+    
+        try {
+            const { data } = await instance.get();
+            
+            return data;
+            
+        } catch ( error ) {
+            console.log(error);
+            return error
+        }
+}
+
+const incomeInsight = async ( id ) => {
+
+    const instance = axios.create({
+        baseURL:`${urlInit}insights/${id}/income-statement`,
+        headers
+        });
+
+        try {
+            const { data } = await instance.get();
+            
+            return data;
+            
+        } catch ( error ) {
+            console.log(error);
+            return error
+        }
+
+}
+const financialRatios = async ( id ) => {
+
+    const instance = axios.create({
+        baseURL:`${urlInit}insights/${id}/financial-ratios`,
+        headers
+        });
+
+        try {
+            const { data } = await instance.get();
+            
+            return data;
+            
+        } catch ( error ) {
+            console.log(error);
+            return error
+        }
+
+}
+const financialRisks = async ( id ) => {
+
+    const instance = axios.create({
+        baseURL:`${urlInit}insights/${id}/risks`,
+        headers
+        });
+
+        try {
+            const { data } = await instance.get();
+            
+            return data;
+            
+        } catch ( error ) {
+            console.log(error);
+            return error
+        }
+
+}
+const taxStatusExtractor = async ( id ) => {
+
+    const instance = axios.create({
+        baseURL:`${urlInit}taxpayers/${id}/tax-status`,
+        headers
+        });
+
+        try {
+            const { data } = await instance.get();
+            
+            return data['hydra:member'];
+            
+        } catch ( error ) {
+            console.log(error);
+            return error
+        }
+
+}
  
 
 
@@ -225,11 +303,17 @@ const validateCredentials = async (id) => {
 module.exports={
     getSatTopClients,
     getSatTopProv,
-    getSatBancos,
-    getResultadosDeclaracion, 
+    getSatBancos, 
     invoiceExtraction,
     validateInvoiceExtraction,
-    validateCredentials
+    validateCredentials,
+    balanceInsight,
+    incomeInsight,
+    metaDataInsight,
+    financialRatios,
+    taxStatusExtractor,
+    financialRisks
+
 }
             
             

@@ -1,4 +1,5 @@
 const { Persona } = require("../models");
+const { ipLocation } = require("./geoapify");
 
 
 const _axios = require("axios").default;
@@ -158,8 +159,6 @@ const personaConstructorDB = (props) => {
             solicitud.fecha_registro = props.createdate
         case ( props.hubspot_owner_id !== undefined ):
             solicitud.propietarios_hs = props.hubspot_owner_id
-        case ( props.ip_del_solicitante !== undefined ):
-            solicitud.ip_del_solicitante = props.ip_del_solicitante
         case ( props.n3_13_tpv !== undefined ) && ( props.n3_13_tpv === 'No' ):
             solicitud.tpv = false
         case ( props.n3_13_tpv !== undefined ) && ( props.n3_13_tpv != 'No' ):
@@ -172,6 +171,11 @@ const personaConstructorDB = (props) => {
             solicitud.clientes_pagan_a_credito = false
         case ( props.n3_20_clientes_pagan_a_mas_de_30_dias !== undefined ) && (props.n3_20_clientes_pagan_a_mas_de_30_dias != 'No' ):
             solicitud.clientes_pagan_a_credito = true
+        case ( props.ip_del_solicitante !== undefined ):
+            solicitud.ip_del_solicitante = props.ip_del_solicitante;
+
+
+
     //BURO 
         case (props.n6_1_cr_dito_hipotecario === 'No') :
             buro.hipotecario = false
@@ -257,6 +261,8 @@ const personaConstructorDB = (props) => {
     if(props.n9_8_2_otros_3){ fotos.push( props.n9_8_2_otros_3 )}
     if(props.n9_8_3_otros_4){ fotos.push( props.n9_8_3_otros_4 )}
 
+
+
     newpersona.solicitud = solicitud;
     newpersona.solicitud.buro = buro;
     newpersona.solicitud.facturacion = facturacion;
@@ -270,9 +276,7 @@ const personaConstructorDB = (props) => {
     persona.save();
 
     
-    return {
-        persona: persona
-    };
+    return persona;
 
 
 }

@@ -43,6 +43,7 @@ const PersonaSchema = Schema({
         fecha_registro: Date,
         propietarios_hs: String,
         ip_del_solicitante: String,
+        ip_location: [],
         referencias: [{
             nombre: String,
             telefono: Number,
@@ -99,7 +100,7 @@ const PersonaSchema = Schema({
         }
 
     },
-    notes:[{
+    notas:[{
         note: String,
         date: Date,
         usuario: String
@@ -113,7 +114,6 @@ const PersonaSchema = Schema({
         ref:'Facturacion',
     },
     estado: {type: Boolean, default: true},
-    notas: [{ nota:String, usuario:Number }],
     etapa: {type: String, default: 'pre-analisis'},
     creacionDb:{ type: Date, default: Date.now}
 

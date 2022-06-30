@@ -3,11 +3,15 @@ const { Schema, model } = require('mongoose');
 
 const FacturacionSchema = Schema({
 
-    estadoResultados:[{
-        category: String,
-        children: [],
+    estadoResultados:[],
+    balanceGeneral:[],
+    financialRatios:[],
+    metadata:[{
+        date: Date,
+        data:{},
     }],
-
+    taxStatus:[],
+    risks:[],
     clientes:[{
             name: String,
             rfc: String,

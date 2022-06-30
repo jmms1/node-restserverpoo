@@ -1,8 +1,6 @@
 const { Buro, Persona, Facturacion } = require("../models");
 const { getBC, buroConstructor } = require("./buroKiban");
-const { getSatTopClients, getSatTopProv, getSatBancos } = require("./satws-connect");
-
-//Obtener info buro y facturacion
+const { getSatTopClients, getSatTopProv, getSatBancos, incomeInsight, metaDataInsight, taxStatusExtractor, balanceInsight, financialRatios, financialRisks } = require("./satws-connect");
 
 const getInfoBC = async (id, personaid) => {
 
@@ -16,7 +14,7 @@ const getInfoBC = async (id, personaid) => {
 
         const personaSIC = await Persona.findByIdAndUpdate(personaid, { consultasBC: sic._id  }, { new:true ,upsert:true });
 
-        return {sic, personaSIC}; 
+        return personaSIC; 
                
     } catch (error) {
 
@@ -35,10 +33,29 @@ const getInfoSAT = async ( id , personaid ) => {
 
     const {institucionesfinancieras, gastosfinancieros} = await getSatBancos(id);
 
+    const balance = await balanceInsight(id);
+
+    const income = await  incomeInsight(id);
+
+    const metadata = await metaDataInsight(id);
+
+    const status = await taxStatusExtractor(id);
+
+    const financialRatio = await financialRatios(id);
+
+    const fRisks = await financialRisks(id);
+
     const facturacion = {};
     facturacion.clientes = clientes;
     facturacion.proveedores = proveedores;
     facturacion.institucionesFinancieras = institucionesfinancieras;
+    facturacion.estadoResultados = income; 
+    facturacion.balanceGeneral = balance
+    facturacion.metadata = metadata;
+    facturacion.taxStatus = status;
+    facturacion.financialRatios = financialRatio;
+    facturacion.risks = fRisks;
+
 
     const newFacturacion = await new Facturacion(facturacion);
     newFacturacion.save();
@@ -46,25 +63,19 @@ const getInfoSAT = async ( id , personaid ) => {
 
     const personaSAT = await Persona.findByIdAndUpdate(personaid, {
         'consultasFacturacion': idMongo,
-         'solicitud.facturacion.ventas': ventas, 
-         'solicitud.facturacion.gastos': gastos, 
-         'solicitud.facturacion.gastosfinancieros':gastosfinancieros }, { new:true ,upsert:true });
-
-    return {newFacturacion, personaSAT };
-
-}
+        'solicitud.facturacion.ventas': ventas, 
+        'solicitud.facturacion.gastos': gastos, 
+        'solicitud.facturacion.gastosfinancieros':gastosfinancieros }, { new:true ,upsert:true });
 
 
 
-//Elabora un modelo de analisis parametrico con la info obtenida 
-const parametrico = () => {
-
+    return personaSAT;
 
 
 }
+
 
 module.exports={
     getInfoBC,
-    parametrico,
     getInfoSAT
 }

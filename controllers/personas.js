@@ -1,9 +1,11 @@
 // CRUD PERSONAS 
 const { request, response } = require("express");
 const { getInfoBC, getInfoSAT } = require("../helpers/analisis");
+const { ipLocation } = require("../helpers/geoapify");
 const { getDeal, personaConstructorDB, createNote, associateNote } = require("../helpers/hubspot-helper");
 const { validateInvoiceExtraction } = require("../helpers/satws-connect");
 const { Persona } = require("../models");
+
 
 
 const cargarPersona = async (req = request, res= response) => {
@@ -14,28 +16,38 @@ const cargarPersona = async (req = request, res= response) => {
 
         const props = await getDeal(id);
       
-        const {persona} = personaConstructorDB(props);
+        const persona = personaConstructorDB(props);
         
-        const {sic, personaSIC}  = await getInfoBC(persona.solicitud.buro.unykoo_id, persona._id);
+
+        //IP Location 
+        if(persona.solicitud.ip_del_solicitante){
+
+            const personaLocation = await ipLocation(persona.solicitud.ip_del_solicitante, persona._id);         
+        }
+
+        if(persona.solicitud.buro.unykoo_id){
+            
+            const  personaSIC   = await getInfoBC(persona.solicitud.buro.unykoo_id, persona._id);
+        }
+        
+        
         
         let rfc; 
         (persona.tipo_persona === 'P.Moral') ?   (rfc = persona.solicitud.RFC_PM)  :  (rfc = persona.solicitud.RFC_PF)
         
         const numberOfExtractions = await validateInvoiceExtraction(rfc);
-        console.log(numberOfExtractions);
        
         if( persona.solicitud.facturacion.status_ciec === false || numberOfExtractions === 0 ){
             
-            return res.status(201).json({sic, personaSIC})
+            return res.status(201).json(persona)
+
         }
         
-        const {newFacturacion, personaSAT} = await getInfoSAT(rfc, persona._id);
+        const  personaSAT  = await getInfoSAT(rfc, persona._id);
 
-        res.status( 201 ).json({
-            personaSAT,
-            sic,
-            newFacturacion
-        });
+        res.status( 201 ).json(
+            personaSAT
+        );
 
     } catch (error) {
         

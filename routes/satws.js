@@ -1,6 +1,6 @@
 var { Router } = require('express');
 var { check } = require('express-validator');
-const {invoiceExtract, validateRFC } = require('../controllers/satws');
+const {invoiceExtract, validateRFC, prueba } = require('../controllers/satws');
 const { validarCampos, validarRfc } = require('../middlewares');
 
 
@@ -12,6 +12,11 @@ router.post('/:id/:idsat', [
     check('id', 'No es in id valido').isMongoId(),
     validarCampos
 ], invoiceExtract);
+
+
+router.put('/prueba/:id', [
+
+], prueba );
 
 router.get('/credential/:idsat', [
     check('idsat').custom(validarRfc),

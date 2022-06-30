@@ -1,9 +1,10 @@
 
 const { response, request } = require("express");
 const { getInfoSAT } = require("../helpers/analisis");
-const { invoiceExtraction, validateCredentials } = require("../helpers/satws-connect");
+const { ipLocation } = require("../helpers/geoapify");
+const { invoiceExtraction, validateCredentials, balanceInsight } = require("../helpers/satws-connect");
 const { timeout } = require("../helpers/timeoutFunctions");
-const { Facturacion, Persona } = require("../models");
+const { Persona } = require("../models");
 
 
 
@@ -76,37 +77,25 @@ const validateRFC = async (req = request, res = response, next) => {
 
 }
 
+const prueba = async (req = request, res = response, next) => {
+
+    const {id} = req.params
+
+    const csf = await ipLocation(id).catch(res.status(400));
+
+    console.log(csf)
+    
+    res.status(200).json(csf);
+
+}
+
 
 
 
 
 module.exports = {
     invoiceExtract,
-    validateRFC
+    validateRFC, 
+    prueba
 }
 
-
-    
-    // const getInfo = async ( req = request, res = response, next ) => {
-    
-    //     const {  id } = req.params;
-        
-    //     const {ventas, clientes} = await getSatTopClients(id).catch(res.status(400));
-    
-    //     const {gastos, proveedores} = await getSatTopProv(id).catch(res.status(400));
-    
-    //     const {institucionesfinancieras, gastosfinancieros} = await getSatBancos(id).catch(res.status(400));
-    
-    //     const data = await getResultadosDeclaracion(id).catch(res.status(400));
-    
-    //     const facturacion = {};
-    //     facturacion.clientes = clientes;
-    //     facturacion.proveedores = proveedores;
-    //     facturacion.institucionesFinancieras = institucionesfinancieras;
-    
-    //     const newFacturacion = await new Facturacion(facturacion);
-    //     newFacturacion.save();
-        
-    //     res.status(201).json( newFacturacion );
-        
-    // }
