@@ -11,7 +11,7 @@ const axios = _axios.create({
     }
 });
 const hapiKey = `?hapikey=${process.env.HUBSPOT_APIKEY}`;
-const props = `&properties=regimen, n4_1_nombre, n4_2_apellido_paterno, n4_3_apellido_materno, n3_rfc, curp, n3_16_razon_social, n3_15_rfc_pm, n3_nombre_comercial, numeroderegistro, hs_object_id, amount, n2_2_tiempo_para_pago, n2_5_ventas_anuales, n2_6_antig_edad_del_negocio, necesidad_de_financiamiento, giro, n3_11_sitio_web, n3_12_facebook, n3_actividad_espec_fica, n3_18_numero_de_empleados, n9_1_03_destino_especifico_del_credito, n2_4_urgencia_de_financiamiento, n3_13_tpv, n3_14_garant_a, n3_17_exportacion, n9_1_02_numero_de_empleados, n3_20_clientes_pagan_a_mas_de_30_dias, n4_94_edad, n4_4_estado_civil, n4_5_fecha_de_nacimiento, createdate, hubspot_owner_id, n3_calle, n3_num_ext, n3_num_int, codigo_postal, n3_9_colonia, municipio_negocio, estado_de_la_rep_del_negocio, n4_6_calle, n4_7_num_ext, n4_8_num_int, n4_9_c_p_, n4_91_colonia, municipio_de_la_persona, estado_de_la_rep_de_la_persona, email, celular, telefono, n4_92_tel_fono, n6_1_cr_dito_hipotecario, n6_2_cr_dito_automotriz, n6_3_tarjeta_de_cr_dito, n6_4_tdc_4_d_gitos, score_bc, n10_1_id_unykoo, n4_93_ciec, credenciales_creadas_satws, datacode, n5_1_nombre_referencia, n5_2_tel_fono_referencia, n5_3_parentesco_referencia, n5_4_nombre, n5_5_tel_fono, n5_6_parentesco, n9_8_otros, n9_8_1_otros_2, n9_8_2_otros_3, n9_8_3_otros_4, ip_del_solicitante `;
+const props = `&properties=regimen, n4_1_nombre, n4_2_apellido_paterno, n4_3_apellido_materno, n3_rfc, curp, n3_16_razon_social, n3_15_rfc_pm, n3_nombre_comercial, numeroderegistro, hs_object_id, amount, n2_2_tiempo_para_pago, n2_5_ventas_anuales, n2_6_antig_edad_del_negocio, necesidad_de_financiamiento, giro, n3_11_sitio_web, n3_12_facebook, n3_actividad_espec_fica, n3_18_numero_de_empleados, n9_1_03_destino_especifico_del_credito, n2_4_urgencia_de_financiamiento, n3_13_tpv, n3_14_garant_a, n3_17_exportacion, n9_1_02_numero_de_empleados, n3_20_clientes_pagan_a_mas_de_30_dias, n4_94_edad, n4_4_estado_civil, n4_5_fecha_de_nacimiento, createdate, hubspot_owner_id, n3_calle, n3_num_ext, n3_num_int, codigo_postal, n3_9_colonia, municipio_negocio, estado_de_la_rep_del_negocio, n4_6_calle, n4_7_num_ext, n4_8_num_int, n4_9_c_p_, n4_91_colonia, municipio_de_la_persona, estado_de_la_rep_de_la_persona, email, celular, telefono, n4_92_tel_fono, n6_1_cr_dito_hipotecario, n6_2_cr_dito_automotriz, n6_3_tarjeta_de_cr_dito, n6_4_tdc_4_d_gitos, score_bc, n10_1_id_unykoo, n4_93_ciec, ciec_si_no, credenciales_creadas_satws, datacode, n5_1_nombre_referencia, n5_2_tel_fono_referencia, n5_3_parentesco_referencia, n5_4_nombre, n5_5_tel_fono, n5_6_parentesco, n9_8_otros, n9_8_1_otros_2, n9_8_2_otros_3, n9_8_3_otros_4, ip_del_solicitante, ciec_si_no`;
 
 
 const getDeal = async (dealId) => {
@@ -159,45 +159,19 @@ const personaConstructorDB = (props) => {
             solicitud.fecha_registro = props.createdate
         case ( props.hubspot_owner_id !== undefined ):
             solicitud.propietarios_hs = props.hubspot_owner_id
-        case ( props.n3_13_tpv !== undefined ) && ( props.n3_13_tpv === 'No' ):
-            solicitud.tpv = false
-        case ( props.n3_13_tpv !== undefined ) && ( props.n3_13_tpv != 'No' ):
-            solicitud.tpv = true
-        case ( props.n3_17_exportacion !== undefined ) && (props.n3_17_exportacion === 'No' ):
-            solicitud.exportacion = false
-        case ( props.n3_17_exportacion !== undefined ) && (props.n3_17_exportacion != 'No' ):
-            solicitud.exportacion = true
-        case ( props.n3_20_clientes_pagan_a_mas_de_30_dias !== undefined ) && (props.n3_20_clientes_pagan_a_mas_de_30_dias === 'No' ):
-            solicitud.clientes_pagan_a_credito = false
-        case ( props.n3_20_clientes_pagan_a_mas_de_30_dias !== undefined ) && (props.n3_20_clientes_pagan_a_mas_de_30_dias != 'No' ):
-            solicitud.clientes_pagan_a_credito = true
         case ( props.ip_del_solicitante !== undefined ):
             solicitud.ip_del_solicitante = props.ip_del_solicitante;
 
 
 
-    //BURO 
-        case (props.n6_1_cr_dito_hipotecario === 'No') :
-            buro.hipotecario = false
-        case (props.n6_1_cr_dito_hipotecario !== undefined) :
-            buro.hipotecario = true
-        case (props.n6_2_cr_dito_automotriz=== 'No') :
-            buro.automotriz = false
-        case (props.n6_2_cr_dito_automotriz !== undefined) :
-            buro.automotriz = true
-        case (props.n6_3_tarjeta_de_cr_dito === 'No') :
-            buro.tarjeta = false
-        case (props.n6_3_tarjeta_de_cr_dito !== undefined) :
-            buro.tarjeta = true
+    //Buro 1
         case (props.n6_4_tdc_4_d_gitos !== undefined ):
             buro.digitos_tdc = props.n6_4_tdc_4_d_gitos
         case (props.score_bc !== undefined ):
             buro.score = props.score_bc
         case (props.n10_1_id_unykoo !== undefined ):
             buro.unykoo_id = props.n10_1_id_unykoo
-    //Facturacion
-        case (  props.n4_93_ciec !== undefined  ) : 
-            facturacion.status_ciec = true	
+    //Facturacion 1 
         case (props.credenciales_creadas_satws !== undefined ) : 
             facturacion.status_satws = props.credenciales_creadas_satws	
         case (props.datacode !== undefined ) : 
@@ -234,6 +208,48 @@ const personaConstructorDB = (props) => {
             newdomiciliop.estado = props.estado_de_la_rep_de_la_persona	
     }
 
+    //Facturacion 2
+    if( props.hasOwnProperty('ciec_si_no') ){
+        props.ciec_si_no === 'No' ? facturacion.status_ciec = false :  facturacion.status_ciec = true 
+    }else{
+        facturacion.status_ciec = false
+    } 
+
+    //Buro 2 
+    
+    if( props.hasOwnProperty('n6_1_cr_dito_hipotecario') ){
+        props.n6_1_cr_dito_hipotecario === 'No' ? buro.hipotecario = false : buro.hipotecario = true
+    }else{
+        buro.hipotecario = false
+    }
+    if( props.hasOwnProperty('n6_2_cr_dito_automotriz') ){
+        props.n6_2_cr_dito_automotriz === 'No' ? buro.automotriz = false : buro.automotriz = true
+    }else{
+        buro.automotriz = false
+    }
+    if( props.hasOwnProperty('n6_3_tarjeta_de_cr_dito') ){
+        props.n6_3_tarjeta_de_cr_dito === 'No' ? buro.tarjeta = false : buro.tarjeta = true
+    }else{
+        buro.tarjeta = false
+    }
+    // Generales 2
+    if( props.hasOwnProperty('n3_13_tpv') ){
+        props.n3_13_tpv === 'No' ? solicitud.tpv = false : solicitud.tpv = true
+    }else{
+        solicitud.tpv = false
+    } 
+    if( props.hasOwnProperty('n3_17_exportacion') ){
+        props.n3_17_exportacion === 'No' ? solicitud.exportacion = false : solicitud.exportacion = true
+    }else{
+        solicitud.exportacion = false
+    } 
+    if( props.hasOwnProperty('n3_20_clientes_pagan_a_mas_de_30_dias') ){
+        props.n3_20_clientes_pagan_a_mas_de_30_dias === 'No' ? solicitud.clientes_pagan_a_credito = false : solicitud.clientes_pagan_a_credito = true
+    }else{
+        solicitud.clientes_pagan_a_credito = false
+    } 
+
+
     //Referencias
 
     if( props.n5_1_nombre_referencia && props.n5_2_tel_fono_referencia && props.n5_3_parentesco_referencia) {
@@ -260,7 +276,6 @@ const personaConstructorDB = (props) => {
     if(props.n9_8_1_otros_2){ fotos.push( props.n9_8_1_otros_2 )}
     if(props.n9_8_2_otros_3){ fotos.push( props.n9_8_2_otros_3 )}
     if(props.n9_8_3_otros_4){ fotos.push( props.n9_8_3_otros_4 )}
-
 
 
     newpersona.solicitud = solicitud;

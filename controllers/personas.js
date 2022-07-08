@@ -18,7 +18,6 @@ const cargarPersona = async (req = request, res= response) => {
       
         const persona = personaConstructorDB(props);
         
-
         //IP Location 
         if(persona.solicitud.ip_del_solicitante){
 
@@ -33,7 +32,7 @@ const cargarPersona = async (req = request, res= response) => {
         
         
         let rfc; 
-        (persona.tipo_persona === 'P.Moral') ?   (rfc = persona.solicitud.RFC_PM)  :  (rfc = persona.solicitud.RFC_PF)
+        (persona.tipo_persona === 'P.Moral') ? (rfc = persona.solicitud.RFC_PM)  :  (rfc = persona.solicitud.RFC_PF)
         
         const numberOfExtractions = await validateInvoiceExtraction(rfc);
        
