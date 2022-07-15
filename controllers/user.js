@@ -28,6 +28,15 @@ const usuariosGet = async (req=request, res = response) => {
     });
 }
 
+const usuarioGet = async (req=request, res = response) => {
+
+    const { id } = req.params; 
+
+    const {nombre, correo, hubspotId} = await Usuario.findById(id);
+
+    res.json({nombre, correo, hubspotId});
+}
+
 
 const usuariosPost = async (req = request, res = response) => {
 
@@ -38,12 +47,12 @@ const usuariosPost = async (req = request, res = response) => {
 
     let password = "holamundo";
 
-    console.log(password);
+
  
     const salt = bcryptjs.genSaltSync();
     usuario.password = bcryptjs.hashSync(password, salt)
 
-    console.log(usuario);
+
 
 
 
@@ -75,9 +84,6 @@ const usuarioPasswordChange = async (req = request, res = response) => {
     const { data } = hubspotResponse
 
     const { results } = data;
-
-
-    console.log(results);
 
     let hubspotId; 
 
@@ -146,6 +152,7 @@ const usuariosPatch = (req, res = response) => {
 
   module.exports = {
       usuariosGet,
+      usuarioGet,
       usuariosPost,
       usuariosPut,
       usuariosDelete,

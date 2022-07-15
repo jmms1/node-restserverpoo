@@ -153,7 +153,8 @@ const validateInvoiceExtraction = async (id) => {
         });
         try {
             const { data } = await instance.get();
-            return data['hydra:totalItems'];
+
+            return { items: data['hydra:totalItems'], member: data['hydra:member']};
             
         } catch (error) {
 

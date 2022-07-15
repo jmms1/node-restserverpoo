@@ -2,7 +2,7 @@
 const { request, response } = require("express");
 const { getInfoBC, getInfoSAT } = require("../helpers/analisis");
 const { ipLocation } = require("../helpers/geoapify");
-const { getDeal, personaConstructorDB, createNote, associateNote } = require("../helpers/hubspot-helper");
+const { getDeal, personaConstructorDB, createNote, associateNote, searchOwnerId } = require("../helpers/hubspot-helper");
 const { validateInvoiceExtraction } = require("../helpers/satws-connect");
 const { Persona } = require("../models");
 
@@ -21,12 +21,12 @@ const cargarPersona = async (req = request, res= response) => {
         //IP Location 
         if(persona.solicitud.ip_del_solicitante){
 
-            const personaLocation = await ipLocation(persona.solicitud.ip_del_solicitante, persona._id);         
+            await ipLocation(persona.solicitud.ip_del_solicitante, persona._id);         
         }
 
         if(persona.solicitud.buro.unykoo_id){
             
-            const  personaSIC   = await getInfoBC(persona.solicitud.buro.unykoo_id, persona._id);
+            await getInfoBC(persona.solicitud.buro.unykoo_id, persona._id);
         }
         
         
@@ -36,18 +36,22 @@ const cargarPersona = async (req = request, res= response) => {
         
         const numberOfExtractions = await validateInvoiceExtraction(rfc);
        
-        if( persona.solicitud.facturacion.status_ciec === false || numberOfExtractions === 0 ){
+        if( persona.solicitud.facturacion.status_ciec === false || numberOfExtractions.items === 0 || numberOfExtractions?.member[0].status === 'failed') {
+            let {_id} = persona;
+            return res.status( 201 ).json(
+                {'msg': ` BC Creado existosamente con id ${_id}`}
+            );
             
-            return res.status(201).json(persona)
-
         }
         
         const  personaSAT  = await getInfoSAT(rfc, persona._id);
 
-        res.status( 201 ).json(
-            personaSAT
-        );
+        const {_id} = personaSAT;
 
+        res.status( 201 ).json(
+            {'msg': `BC y SAT Creado existosamente con id ${_id}`}
+        );
+        console.log(personaSAT);    
     } catch (error) {
         
         res.json(error);
@@ -77,6 +81,48 @@ const getCards = async (req = request, res= response) => {
 
 
 }
+const searchDeals = async (req = request, res= response) => {
+
+    const {property, searchVariable} = req.query;
+
+    const query = [
+        {
+          '$search': {
+            'index': 'dealSearch', 
+            'text': {
+              'query': `${searchVariable}`, 
+              'path': {
+                'wildcard': '*'
+              },
+              'fuzzy': {}
+            }
+          }
+        }, {
+          '$project': {
+            'solicitud.nombre_comercial': 1, 
+            'solicitud.distrito_crm_id': 1, 
+            'solicitud.monto_solicitado _id': 1, 
+            'etapa': 1
+          }
+        }, {
+            '$limit': 5
+        }
+      ];
+
+  
+    try {
+
+        const cards = await Persona.aggregate(query);
+
+        res.json( cards );
+
+    } catch (error) {
+
+        res.json(error);
+        
+    }
+
+}
 
 const getPersona = async ( req= request, res= response ) => {
 
@@ -88,7 +134,16 @@ const getPersona = async ( req= request, res= response ) => {
 
         const persona = await Persona.findById(id).populate('consultasBC').populate('consultasFacturacion');
 
+        if(persona.solicitud.propietarios_hs){
+            const {firstName, lastName, email} = await searchOwnerId(persona.solicitud.propietarios_hs);
+            const ownerInfo = {firstName, lastName, email};
+
+
+            return res.json({persona, ownerInfo});
+
+        }
         res.json( persona );
+       
         
     } catch (error) {
 
@@ -114,8 +169,9 @@ const postNote = async ( req=request, res=response) => {
     const {noteForm, ownerNoteId, hubspotDealId, idDeal, idUsuario} = req.body;
 
     const nota = {
-        nota:noteForm,
-        date: new Date
+        note:noteForm,
+        date: new Date,
+        usuario: idUsuario
     };
     
     const response = await createNote(noteForm, ownerNoteId);
@@ -139,10 +195,17 @@ const postNote = async ( req=request, res=response) => {
     res.status(200).json({'msg':'Nota creada correctamente'});
 }
 
+const getHubspotUserById = async ( req=request, res=response) => {
+
+    const { id } = req.params;
+
+}
+
 module.exports={
     cargarPersona,
     getCards,
     getPersona,
     postNote,
-    changePersonaStage
+    changePersonaStage,
+    searchDeals
 }

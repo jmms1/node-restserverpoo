@@ -93,10 +93,6 @@ const personaConstructorDB = (props) => {
     switch (true) {
         case (props.regimen !== undefined) :
             newpersona.tipo_persona = props.regimen
-        case (props.regimen !== undefined) && ( props.regimen ==='P.Moral') &&(props.n3_16_razon_social):
-            solicitud.razon_social = props.n3_16_razon_social;
-        case (props.regimen !== undefined) && ( props.regimen ==='P.Moral') &&(props.n3_15_rfc_pm):
-            solicitud.RFC_PM = props.n3_15_rfc_pm;
         case (props.n4_1_nombre !== undefined ):
             solicitud.nombre =props.n4_1_nombre
         case (props.n4_2_apellido_paterno !== undefined ):
@@ -277,6 +273,17 @@ const personaConstructorDB = (props) => {
     if(props.n9_8_2_otros_3){ fotos.push( props.n9_8_2_otros_3 )}
     if(props.n9_8_3_otros_4){ fotos.push( props.n9_8_3_otros_4 )}
 
+    //Razon Social 
+
+    if(props.regimen !== undefined &&  props.regimen ==='P.Moral' &&props.n3_16_razon_social){
+
+        solicitud.razon_social = props.n3_16_razon_social;
+    }
+    if(props.regimen !== undefined && props.regimen ==='P.Moral' && props.n3_15_rfc_pm){
+        
+        solicitud.RFC_PM = props.n3_15_rfc_pm;
+    }
+
 
     newpersona.solicitud = solicitud;
     newpersona.solicitud.buro = buro;
@@ -296,12 +303,12 @@ const personaConstructorDB = (props) => {
 
 }
 
-const searchOwnerId = async (correo) => {
+const searchOwnerId = async (id) => {
 
     try {
-        const apiResponse = await axios.get(`crm/v3/owners/` + hapiKey + `&email=${correo}`);
+        const apiResponse = await axios.get(`owners/v2/owners/`+ `${id}` + hapiKey );
 
-        return apiResponse;
+        return apiResponse.data;
         
     } catch (error) {
         return error;
