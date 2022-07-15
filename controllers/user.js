@@ -45,7 +45,7 @@ const usuariosPost = async (req = request, res = response) => {
 
     const usuario = new Usuario( {nombre, correo, rol} );
 
-    let password = "holamundo";
+    let password = "distritopyme2022";
 
 
  
