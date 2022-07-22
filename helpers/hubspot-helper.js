@@ -317,11 +317,26 @@ const searchOwnerId = async (id) => {
 
 }
 
+const searchOwnerByEmail= async (email) => {
+
+    try {
+        const apiResponse = await axios.get(`crm/v3/owners/`+ hapiKey + `&email=${email}`  );
+
+        return apiResponse.data;
+        
+    } catch (error) {
+        return error;
+    }
+
+
+}
+
 module.exports={
     getDeal,
     personaConstructorDB,
     createNote,
     associateNote,
-    searchOwnerId
+    searchOwnerId,
+    searchOwnerByEmail
 }
 

@@ -1,7 +1,7 @@
 const { response, request } = require('express');
 const bcryptjs = require('bcryptjs');
 const Usuario = require('../models/usuario');
-const { searchOwnerId } = require('../helpers/hubspot-helper');
+const { searchOwnerId, searchOwnerByEmail } = require('../helpers/hubspot-helper');
 
 
 
@@ -69,7 +69,7 @@ const usuarioPasswordChange = async (req = request, res = response) => {
     const salt = bcryptjs.genSaltSync();
     const encriptPassword = bcryptjs.hashSync(password, salt);
     
-    const hubspotResponse = await searchOwnerId(correo);
+    const hubspotResponse = await searchOwnerByEmail(correo);
 
 
     if( !hubspotResponse.data ){
@@ -101,9 +101,6 @@ const usuarioPasswordChange = async (req = request, res = response) => {
 
     }
     
-
-
-
     const nuevoUsuario = await Usuario.findByIdAndUpdate( id, {'password':encriptPassword, 'nuevo':false, hubspotId}, {new: true});
 
     res.json(nuevoUsuario);
@@ -141,10 +138,10 @@ const usuariosDelete = async (req, res = response) => {
     res.status(200).json( usuario );
 }
 
-const usuariosPatch = (req, res = response) => {
-    res.json({
-        msg: 'PATCH API- controlador'
-    })
+const usuariosPatch = async (req, res = response) => {
+
+
+    res.json({'msg': 'usuarios patch'});
 }
 
 
