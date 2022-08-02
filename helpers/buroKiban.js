@@ -15,6 +15,7 @@ const getBC = async (id) => {
     try {
 
         const {data} = await axios(config);
+        
         return data;
         
     } catch (error) {
@@ -29,26 +30,25 @@ const buroConstructor = (data) => {
 
   let newburo = {};
   const prospector = data[3];
-  newburo.status = prospector.consultaSIC.status;
-
-  if(newburo.status !== "SUCCESS"){
+  
+  if(prospector.consultaSIC.status !== "SUCCESS"){
     return newburo
   }else{
+    newburo.status = prospector.consultaSIC.status;      
+    data.forEach( e => {
         
-  data.forEach( e => {
-      
-      if(e.type === 'CONSULTA_SIC' && e.login === 'admin'){
-          if(e.consultaSIC.profileName === 'Prospector'){
-              newburo.scoreBuroCredito = e.consultaSIC.respuestaBC;
-          }
-          if(e.consultaSIC.profileName === 'Buró Fisica sin Score (DP)'){
-              newburo.respuestaBCPF = e.consultaSIC.respuestaBC;
-          }
-          if(e.consultaSIC.profileName === 'P.Moral'){
-              newburo.respuestaBCPM = e.consultaSIC.respuestaPM;
-          }
-      }
-  });
+        if(e.type === 'CONSULTA_SIC'){
+            if(e.consultaSIC.profileName === 'Prospector'){
+                newburo.scoreBuroCredito = e.consultaSIC.respuestaBC;
+            }
+            if(e.consultaSIC.profileName === 'Buró Fisica sin Score (DP)'){
+                newburo.respuestaBCPF = e.consultaSIC.respuestaBC;
+            }
+            if(e.consultaSIC.profileName === 'P.Moral'){
+                newburo.respuestaBCPM = e.consultaSIC.respuestaPM;
+            }
+        }
+    });
 
   return newburo
 

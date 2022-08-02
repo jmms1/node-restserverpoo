@@ -1,6 +1,6 @@
 var { Router } = require('express');
 const { check } = require('express-validator');
-const { cargarPersona, getCards, getPersona, postNote, changePersonaStage, searchDeals } = require('../controllers/personas');
+const { cargarPersona, getCards, getPersona, postNote, changePersonaStage, searchDeals, postNoteDB } = require('../controllers/personas');
 const { validarCampos, validarJWT } = require('../middlewares');
 
 
@@ -23,6 +23,13 @@ router.post('/notes/',[
     check('idUsuario', 'database id user required').isMongoId(),
     validarCampos,
 ], postNote );
+
+router.post('/notesdb/',[
+    check('noteForm', 'note required').not().isEmpty(),
+    check('idDeal', 'database id deal required').isMongoId(),
+    check('idUsuario', 'database id user required').isMongoId(),
+    validarCampos,
+], postNoteDB );
 
 router.put('/etapa/:id',[
     check('etapa', 'info required').not().isEmpty(),

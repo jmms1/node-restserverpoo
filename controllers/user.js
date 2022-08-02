@@ -72,7 +72,7 @@ const usuarioPasswordChange = async (req = request, res = response) => {
     const hubspotResponse = await searchOwnerByEmail(correo);
 
 
-    if( !hubspotResponse.data ){
+    if( !hubspotResponse ){
 
         await Usuario.findByIdAndUpdate( id, {'password':encriptPassword, 'nuevo':false }, {new: true});
 
@@ -81,9 +81,7 @@ const usuarioPasswordChange = async (req = request, res = response) => {
 
     }
 
-    const { data } = hubspotResponse
-
-    const { results } = data;
+    const { results } = hubspotResponse;
 
     let hubspotId; 
 

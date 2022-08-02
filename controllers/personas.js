@@ -17,19 +17,17 @@ const cargarPersona = async (req = request, res= response) => {
         const props = await getDeal(id);
       
         const persona = personaConstructorDB(props);
-        
-        //IP Location 
-        if(persona.solicitud.ip_del_solicitante){
 
-            await ipLocation(persona.solicitud.ip_del_solicitante, persona._id);         
+
+        if( persona.solicitud.ip_del_solicitante ){
+            let ip = await ipLocation(persona.solicitud.ip_del_solicitante, persona._id);
+            
         }
 
         if(persona.solicitud.buro.unykoo_id){
-            
-            await getInfoBC(persona.solicitud.buro.unykoo_id, persona._id);
+            let bc = await getInfoBC(persona.solicitud.buro.unykoo_id, persona._id);
         }
-        
-        
+
         
         let rfc; 
         (persona.tipo_persona === 'P.Moral') ? (rfc = persona.solicitud.RFC_PM)  :  (rfc = persona.solicitud.RFC_PF)
@@ -112,7 +110,13 @@ const searchDeals = async (req = request, res= response) => {
   
     try {
 
-        const cards = await Persona.aggregate(query);
+        let cards = await Persona.aggregate(query);
+
+        // if(cards === [] ){
+        //     let newcards = await Persona.find({ 'solicitud.distrito_crm_id': searchVariable},'solicitud.nombre_comercial solicitud.distrito_crm_id solicitud.monto_solicitado _id etapa');
+        //     if( newcard) { cards = newcards}
+
+        // }
 
         res.json( cards );
 
@@ -195,6 +199,23 @@ const postNote = async ( req=request, res=response) => {
     res.status(200).json({'msg':'Nota creada correctamente'});
 }
 
+const postNoteDB = async ( req=request, res=response ) => {
+
+    const {noteForm, idDeal, idUsuario} = req.body;
+
+    const nota = {
+        note:noteForm,
+        date: new Date,
+        usuario: idUsuario
+    };
+
+    const personamodify = await Persona.findByIdAndUpdate(idDeal, { $push: { notas: nota  } }, {new: true});
+
+
+    res.status(200).json({'msg':'Nota creada correctamente en la base de datos de Analyzer'});
+
+}
+
 const getHubspotUserById = async ( req=request, res=response) => {
 
     const { id } = req.params;
@@ -207,5 +228,6 @@ module.exports={
     getPersona,
     postNote,
     changePersonaStage,
-    searchDeals
+    searchDeals,
+    postNoteDB
 }
